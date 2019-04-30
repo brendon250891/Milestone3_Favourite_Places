@@ -9,12 +9,19 @@
 /* Begin PBXBuildFile section */
 		DAE39F8D22790067008B26F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F8C22790067008B26F0 /* AppDelegate.swift */; };
 		DAE39F8F22790067008B26F0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F8E22790067008B26F0 /* MasterViewController.swift */; };
-		DAE39F9122790067008B26F0 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F9022790067008B26F0 /* DetailViewController.swift */; };
+		DAE39F9122790067008B26F0 /* CategoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F9022790067008B26F0 /* CategoryDetailViewController.swift */; };
 		DAE39F9422790067008B26F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE39F9222790067008B26F0 /* Main.storyboard */; };
 		DAE39F9622790068008B26F0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = DAE39F9522790068008B26F0 /* Assets.xcassets */; };
 		DAE39F9922790068008B26F0 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = DAE39F9722790068008B26F0 /* LaunchScreen.storyboard */; };
 		DAE39FA422790068008B26F0 /* Milestone3_FavouritePlacesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FA322790068008B26F0 /* Milestone3_FavouritePlacesTests.swift */; };
 		DAE39FAF22790068008B26F0 /* Milestone3_FavouritePlacesUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FAE22790068008B26F0 /* Milestone3_FavouritePlacesUITests.swift */; };
+		DAE39FC0227900CB008B26F0 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FBF227900CB008B26F0 /* Category.swift */; };
+		DAE39FC22279011C008B26F0 /* Place.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FC12279011C008B26F0 /* Place.swift */; };
+		DAE39FC422790246008B26F0 /* SunriseAndSunset.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FC322790246008B26F0 /* SunriseAndSunset.swift */; };
+		DAE39FC6227902D0008B26F0 /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FC5227902D0008B26F0 /* Weather.swift */; };
+		DAE39FC822790A4B008B26F0 /* CategoryDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FC722790A4B008B26F0 /* CategoryDB.swift */; };
+		DAE39FCB22790F98008B26F0 /* SunriseSunsetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */; };
+		DAE39FCD22790FA4008B26F0 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -38,7 +45,7 @@
 		DAE39F8922790067008B26F0 /* Milestone3_FavouritePlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Milestone3_FavouritePlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE39F8C22790067008B26F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAE39F8E22790067008B26F0 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
-		DAE39F9022790067008B26F0 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		DAE39F9022790067008B26F0 /* CategoryDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDetailViewController.swift; sourceTree = "<group>"; };
 		DAE39F9322790067008B26F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		DAE39F9522790068008B26F0 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		DAE39F9822790068008B26F0 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -49,6 +56,13 @@
 		DAE39FAA22790068008B26F0 /* Milestone3_FavouritePlacesUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = Milestone3_FavouritePlacesUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE39FAE22790068008B26F0 /* Milestone3_FavouritePlacesUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Milestone3_FavouritePlacesUITests.swift; sourceTree = "<group>"; };
 		DAE39FB022790068008B26F0 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		DAE39FBF227900CB008B26F0 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		DAE39FC12279011C008B26F0 /* Place.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Place.swift; sourceTree = "<group>"; };
+		DAE39FC322790246008B26F0 /* SunriseAndSunset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunriseAndSunset.swift; sourceTree = "<group>"; };
+		DAE39FC5227902D0008B26F0 /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
+		DAE39FC722790A4B008B26F0 /* CategoryDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDB.swift; sourceTree = "<group>"; };
+		DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunriseSunsetAPI.swift; sourceTree = "<group>"; };
+		DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,12 +113,12 @@
 		DAE39F8B22790067008B26F0 /* Milestone3_FavouritePlaces */ = {
 			isa = PBXGroup;
 			children = (
+				DAE39FC922790F7A008B26F0 /* API */,
+				DAE39FBE227900BC008B26F0 /* Model */,
+				DAE39FBD227900A9008B26F0 /* View */,
+				DAE39FBC2279008C008B26F0 /* Controller */,
 				DAE39F8C22790067008B26F0 /* AppDelegate.swift */,
-				DAE39F8E22790067008B26F0 /* MasterViewController.swift */,
-				DAE39F9022790067008B26F0 /* DetailViewController.swift */,
-				DAE39F9222790067008B26F0 /* Main.storyboard */,
 				DAE39F9522790068008B26F0 /* Assets.xcassets */,
-				DAE39F9722790068008B26F0 /* LaunchScreen.storyboard */,
 				DAE39F9A22790068008B26F0 /* Info.plist */,
 			);
 			path = Milestone3_FavouritePlaces;
@@ -126,6 +140,45 @@
 				DAE39FB022790068008B26F0 /* Info.plist */,
 			);
 			path = Milestone3_FavouritePlacesUITests;
+			sourceTree = "<group>";
+		};
+		DAE39FBC2279008C008B26F0 /* Controller */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39F9022790067008B26F0 /* CategoryDetailViewController.swift */,
+				DAE39F8E22790067008B26F0 /* MasterViewController.swift */,
+			);
+			path = Controller;
+			sourceTree = "<group>";
+		};
+		DAE39FBD227900A9008B26F0 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39F9722790068008B26F0 /* LaunchScreen.storyboard */,
+				DAE39F9222790067008B26F0 /* Main.storyboard */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		DAE39FBE227900BC008B26F0 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39FBF227900CB008B26F0 /* Category.swift */,
+				DAE39FC12279011C008B26F0 /* Place.swift */,
+				DAE39FC322790246008B26F0 /* SunriseAndSunset.swift */,
+				DAE39FC5227902D0008B26F0 /* Weather.swift */,
+				DAE39FC722790A4B008B26F0 /* CategoryDB.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		DAE39FC922790F7A008B26F0 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */,
+				DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -259,9 +312,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAE39F9122790067008B26F0 /* DetailViewController.swift in Sources */,
+				DAE39F9122790067008B26F0 /* CategoryDetailViewController.swift in Sources */,
 				DAE39F8F22790067008B26F0 /* MasterViewController.swift in Sources */,
 				DAE39F8D22790067008B26F0 /* AppDelegate.swift in Sources */,
+				DAE39FC422790246008B26F0 /* SunriseAndSunset.swift in Sources */,
+				DAE39FC0227900CB008B26F0 /* Category.swift in Sources */,
+				DAE39FC22279011C008B26F0 /* Place.swift in Sources */,
+				DAE39FC6227902D0008B26F0 /* Weather.swift in Sources */,
+				DAE39FCD22790FA4008B26F0 /* WeatherAPI.swift in Sources */,
+				DAE39FC822790A4B008B26F0 /* CategoryDB.swift in Sources */,
+				DAE39FCB22790F98008B26F0 /* SunriseSunsetAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
