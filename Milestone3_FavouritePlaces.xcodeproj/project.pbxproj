@@ -22,6 +22,10 @@
 		DAE39FC822790A4B008B26F0 /* CategoryDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FC722790A4B008B26F0 /* CategoryDB.swift */; };
 		DAE39FCB22790F98008B26F0 /* SunriseSunsetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */; };
 		DAE39FCD22790FA4008B26F0 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */; };
+		DAE39FD0227D6CF3008B26F0 /* PhoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCF227D6CF3008B26F0 /* PhoneDelegate.swift */; };
+		DAE39FD3227D6E6D008B26F0 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD2227D6E6D008B26F0 /* TapGestureRecognizer.swift */; };
+		DAE39FD5227D6EFF008B26F0 /* PressGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD4227D6EFF008B26F0 /* PressGestureRecognizer.swift */; };
+		DAE39FD82280FF40008B26F0 /* Errorhandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD72280FF40008B26F0 /* Errorhandler.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -63,6 +67,10 @@
 		DAE39FC722790A4B008B26F0 /* CategoryDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDB.swift; sourceTree = "<group>"; };
 		DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunriseSunsetAPI.swift; sourceTree = "<group>"; };
 		DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
+		DAE39FCF227D6CF3008B26F0 /* PhoneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneDelegate.swift; sourceTree = "<group>"; };
+		DAE39FD2227D6E6D008B26F0 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
+		DAE39FD4227D6EFF008B26F0 /* PressGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressGestureRecognizer.swift; sourceTree = "<group>"; };
+		DAE39FD72280FF40008B26F0 /* Errorhandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errorhandler.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -113,6 +121,9 @@
 		DAE39F8B22790067008B26F0 /* Milestone3_FavouritePlaces */ = {
 			isa = PBXGroup;
 			children = (
+				DAE39FD62280FF32008B26F0 /* Errorhandler */,
+				DAE39FD1227D6E3F008B26F0 /* Gestures */,
+				DAE39FCE227D6CE0008B26F0 /* Protocols */,
 				DAE39FC922790F7A008B26F0 /* API */,
 				DAE39FBE227900BC008B26F0 /* Model */,
 				DAE39FBD227900A9008B26F0 /* View */,
@@ -179,6 +190,31 @@
 				DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		DAE39FCE227D6CE0008B26F0 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39FCF227D6CF3008B26F0 /* PhoneDelegate.swift */,
+			);
+			path = Protocols;
+			sourceTree = "<group>";
+		};
+		DAE39FD1227D6E3F008B26F0 /* Gestures */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39FD2227D6E6D008B26F0 /* TapGestureRecognizer.swift */,
+				DAE39FD4227D6EFF008B26F0 /* PressGestureRecognizer.swift */,
+			);
+			path = Gestures;
+			sourceTree = "<group>";
+		};
+		DAE39FD62280FF32008B26F0 /* Errorhandler */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39FD72280FF40008B26F0 /* Errorhandler.swift */,
+			);
+			path = Errorhandler;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -312,10 +348,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAE39FD0227D6CF3008B26F0 /* PhoneDelegate.swift in Sources */,
 				DAE39F9122790067008B26F0 /* CategoryDetailViewController.swift in Sources */,
 				DAE39F8F22790067008B26F0 /* MasterViewController.swift in Sources */,
 				DAE39F8D22790067008B26F0 /* AppDelegate.swift in Sources */,
 				DAE39FC422790246008B26F0 /* SunriseAndSunset.swift in Sources */,
+				DAE39FD82280FF40008B26F0 /* Errorhandler.swift in Sources */,
+				DAE39FD5227D6EFF008B26F0 /* PressGestureRecognizer.swift in Sources */,
+				DAE39FD3227D6E6D008B26F0 /* TapGestureRecognizer.swift in Sources */,
 				DAE39FC0227900CB008B26F0 /* Category.swift in Sources */,
 				DAE39FC22279011C008B26F0 /* Place.swift in Sources */,
 				DAE39FC6227902D0008B26F0 /* Weather.swift in Sources */,

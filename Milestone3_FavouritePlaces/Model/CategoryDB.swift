@@ -18,9 +18,24 @@ class CategoryDB {
     /// Default Constructor.
     init() {
         categories = [Category]()
-        if fileExists() && isSavedData() {
+        if !fileExists() {
+            addCategory("Default")
+            saveData()
+        } else if isSavedData() {
             setSavedData()
         }
+    }
+    
+    func addCategory(_ categoryName: String? = nil) {
+        guard let categoryName = categoryName else {
+            categories.append(Category())
+            return
+        }
+        categories.append(Category(categoryName))
+    }
+    
+    func removeCategory(_ index: Int) {
+        categories.remove(at: index)
     }
     
     /// Gets the number of Categories currently stored.
@@ -35,9 +50,21 @@ class CategoryDB {
         return categories[index]
     }
     
+    /// Checks if the file containing saved data exists.
     func fileExists() -> Bool {
-        return FileManager.default.fileExists(atPath: "\(filePath)")
+        return FileManager.default.fileExists(atPath: filePath.path)
     }
+    
+    /// Saves data to the filepath
+    func saveData() {
+        do {
+            let data = try JSONEncoder().encode(categories)
+            try data.write(to: filePath, options: .atomic)
+        } catch {
+            print("Saving Error: \(error)")
+        }
+    }
+    
     /// Checks if there is already stored data.
     /// - Returns: true if there is data, false otherwise.
     func isSavedData() -> Bool {
@@ -46,7 +73,7 @@ class CategoryDB {
             let data = try Data(contentsOf: filePath)
             found = data.isEmpty ? false : true
         } catch {
-            print("Error: \(error)")
+            print("Checking for saved data Error: \(error)")
             found = false
         }
         return found
@@ -58,7 +85,14 @@ class CategoryDB {
             let data = try Data(contentsOf: filePath)
             categories = try JSONDecoder().decode([Category].self, from: data)
         } catch {
-            print("Error: \(error)")
+            print("Getting saved data Error: \(error)")
         }
+    }
+    
+    func clearSavedData() {
+        categories = [Category]()
+        addCategory("Default")
+        saveData()
+        print("Data reset.")
     }
 }
