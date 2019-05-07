@@ -26,6 +26,11 @@
 		DAE39FD3227D6E6D008B26F0 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD2227D6E6D008B26F0 /* TapGestureRecognizer.swift */; };
 		DAE39FD5227D6EFF008B26F0 /* PressGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD4227D6EFF008B26F0 /* PressGestureRecognizer.swift */; };
 		DAE39FD82280FF40008B26F0 /* Errorhandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD72280FF40008B26F0 /* Errorhandler.swift */; };
+		DAE39FDC228199A0008B26F0 /* RemoveCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FDB228199A0008B26F0 /* RemoveCategoryViewController.swift */; };
+		DAE39FDE22819CBD008B26F0 /* RemoveCategoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FDD22819CBD008B26F0 /* RemoveCategoryDelegate.swift */; };
+		DAE39FE02281A9CB008B26F0 /* PlaceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FDF2281A9CB008B26F0 /* PlaceDetailViewController.swift */; };
+		DAE39FE32281AF5F008B26F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE39FE22281AF5F008B26F0 /* CoreLocation.framework */; };
+		DAE39FE52281AF65008B26F0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE39FE42281AF65008B26F0 /* MapKit.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,6 +76,11 @@
 		DAE39FD2227D6E6D008B26F0 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		DAE39FD4227D6EFF008B26F0 /* PressGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressGestureRecognizer.swift; sourceTree = "<group>"; };
 		DAE39FD72280FF40008B26F0 /* Errorhandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errorhandler.swift; sourceTree = "<group>"; };
+		DAE39FDB228199A0008B26F0 /* RemoveCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCategoryViewController.swift; sourceTree = "<group>"; };
+		DAE39FDD22819CBD008B26F0 /* RemoveCategoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCategoryDelegate.swift; sourceTree = "<group>"; };
+		DAE39FDF2281A9CB008B26F0 /* PlaceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailViewController.swift; sourceTree = "<group>"; };
+		DAE39FE22281AF5F008B26F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		DAE39FE42281AF65008B26F0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -78,6 +88,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				DAE39FE52281AF65008B26F0 /* MapKit.framework in Frameworks */,
+				DAE39FE32281AF5F008B26F0 /* CoreLocation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -105,6 +117,7 @@
 				DAE39FA222790068008B26F0 /* Milestone3_FavouritePlacesTests */,
 				DAE39FAD22790068008B26F0 /* Milestone3_FavouritePlacesUITests */,
 				DAE39F8A22790067008B26F0 /* Products */,
+				DAE39FE12281AF5F008B26F0 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -158,6 +171,8 @@
 			children = (
 				DAE39F9022790067008B26F0 /* CategoryDetailViewController.swift */,
 				DAE39F8E22790067008B26F0 /* MasterViewController.swift */,
+				DAE39FDB228199A0008B26F0 /* RemoveCategoryViewController.swift */,
+				DAE39FDF2281A9CB008B26F0 /* PlaceDetailViewController.swift */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -196,6 +211,7 @@
 			isa = PBXGroup;
 			children = (
 				DAE39FCF227D6CF3008B26F0 /* PhoneDelegate.swift */,
+				DAE39FDD22819CBD008B26F0 /* RemoveCategoryDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -215,6 +231,15 @@
 				DAE39FD72280FF40008B26F0 /* Errorhandler.swift */,
 			);
 			path = Errorhandler;
+			sourceTree = "<group>";
+		};
+		DAE39FE12281AF5F008B26F0 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				DAE39FE42281AF65008B26F0 /* MapKit.framework */,
+				DAE39FE22281AF5F008B26F0 /* CoreLocation.framework */,
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -356,11 +381,14 @@
 				DAE39FD82280FF40008B26F0 /* Errorhandler.swift in Sources */,
 				DAE39FD5227D6EFF008B26F0 /* PressGestureRecognizer.swift in Sources */,
 				DAE39FD3227D6E6D008B26F0 /* TapGestureRecognizer.swift in Sources */,
+				DAE39FDC228199A0008B26F0 /* RemoveCategoryViewController.swift in Sources */,
+				DAE39FE02281A9CB008B26F0 /* PlaceDetailViewController.swift in Sources */,
 				DAE39FC0227900CB008B26F0 /* Category.swift in Sources */,
 				DAE39FC22279011C008B26F0 /* Place.swift in Sources */,
 				DAE39FC6227902D0008B26F0 /* Weather.swift in Sources */,
 				DAE39FCD22790FA4008B26F0 /* WeatherAPI.swift in Sources */,
 				DAE39FC822790A4B008B26F0 /* CategoryDB.swift in Sources */,
+				DAE39FDE22819CBD008B26F0 /* RemoveCategoryDelegate.swift in Sources */,
 				DAE39FCB22790F98008B26F0 /* SunriseSunsetAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

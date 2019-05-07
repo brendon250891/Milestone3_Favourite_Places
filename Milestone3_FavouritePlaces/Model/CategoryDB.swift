@@ -38,6 +38,16 @@ class CategoryDB {
         categories.remove(at: index)
     }
     
+    func removeCategory(_ category: Category) -> Int? {
+        for i in 0..<getCategoryCount() {
+            if categories[i] == category {
+                categories.remove(at: i)
+                return i
+            }
+        }
+        return nil
+    }
+    
     /// Gets the number of Categories currently stored.
     /// - Returns: The nunmber of Categories.
     func getCategoryCount() -> Int {

@@ -8,7 +8,8 @@
 
 import Foundation
 
-class Category: Codable {
+class Category: Codable, Equatable {
+    
     /// The name of the Category.
     private var categoryName: String
     
@@ -83,5 +84,9 @@ class Category: Codable {
     /// - Returns: The Place at the given index.
     func getPlace(_ index: Int) -> Place {
         return places[index]
+    }
+    
+    static func == (lhs: Category, rhs: Category) -> Bool {
+        return lhs.getCategoryName() == rhs.getCategoryName() && lhs.getDateCreated() == rhs.getDateCreated() && lhs.getPlaceCount() == rhs.getPlaceCount()
     }
 }

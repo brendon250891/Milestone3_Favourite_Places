@@ -29,6 +29,7 @@ class CategoryDetailViewController: UITableViewController, UITextFieldDelegate {
         if isInSplitView() && isValidUserInput(categoryNameTextField) {
             save()
             delegate?.save()
+            clearTextFields()
         }
     }
     
@@ -60,6 +61,17 @@ class CategoryDetailViewController: UITableViewController, UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
+    }
+    
+    func clearTextFields() {
+        let textFields = getTextFields()
+        for textField in textFields {
+            textField.text = ""
+        }
+    }
+    
+    func getTextFields() -> [UITextField] {
+        return [categoryNameTextField, dateCreatedTextField, placeCountTextField]
     }
     
     @objc

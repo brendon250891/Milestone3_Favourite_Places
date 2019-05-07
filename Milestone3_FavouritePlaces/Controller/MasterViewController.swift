@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController, PhoneDelegate {
+class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategoryDelegate {
     /// The default detail view to be displayed next to the master view when in split view.
     var categoryDetailViewController: CategoryDetailViewController? = nil
     
@@ -65,14 +65,20 @@ class MasterViewController: UITableViewController, PhoneDelegate {
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let controller = setupControllersWithNavigationControllers(segue, sender) else { return }
         switch segue.identifier {
-        default:
+        case "showCategoryDetailView":
             setupShowCategoryDetailView(controller, sender)
+        case "showRemoveCategoryModal":
+            setupRemoveCategoryModalView(controller, sender)
+        default:
+            break
         }
     }
     
     func setupControllersWithNavigationControllers(_ segue: UIStoryboardSegue, _ sender: Any?) -> UIViewController? {
         guard let controller = (segue.destination as? UINavigationController)?.topViewController else {
-            /// if the view doesn't have a navigation controller call setup here.
+            if let controller = segue.destination as? RemoveCategoryViewController {
+                return controller
+            }
             return nil
         }
         controller.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
@@ -99,6 +105,12 @@ class MasterViewController: UITableViewController, PhoneDelegate {
         guard let index = categoryIndex, let title = viewTitle else { return }
         categoryDetailViewController.category = categories.getCategory(index)
         categoryDetailViewController.navigationItem.title = title
+    }
+    
+    func setupRemoveCategoryModalView(_ controller: UIViewController, _ sender: Any?) {
+        guard let removeCategoryController = controller as? RemoveCategoryViewController, let gesture = sender as? PressGestureRecognizer else { return }
+        removeCategoryController.delegate = self
+        removeCategoryController.category = categories.getCategory(gesture.categoryIndex)
     }
 
     // MARK: - Table View
@@ -177,7 +189,7 @@ class MasterViewController: UITableViewController, PhoneDelegate {
     
     @objc
     func categoryPressed(_ sender: PressGestureRecognizer) {
-        print("Category Pressed.")
+        performSegue(withIdentifier: "showRemoveCategoryModal", sender: sender)
     }
 
     // MARK: - Phone Delegates
@@ -194,6 +206,19 @@ class MasterViewController: UITableViewController, PhoneDelegate {
         }
         navigationController?.popViewController(animated: true)
         tableView.reloadData()
+    }
+    
+    // MARK: - Remove Category Delegate Functions
+    
+    func remove(_ category: Category) {
+        guard let categoryIndex = categories.removeCategory(category) else { return }
+        dismiss(animated: true) { [weak self] in
+            self?.tableView.deleteSections(IndexSet([categoryIndex]), with: .automatic)
+        }
+    }
+    
+    func dismiss() {
+        dismiss(animated: true, completion: nil)
     }
 }
 
