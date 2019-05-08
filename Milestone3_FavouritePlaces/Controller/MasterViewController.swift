@@ -17,6 +17,9 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
     
     /// Flag indicating whether a Category is being added or not.
     var addingCategory = false
+    
+    /// Flag indicating whether a Place is being added or not.
+    var addingPlace = false
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -69,6 +72,8 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
             setupShowCategoryDetailView(controller, sender)
         case "showRemoveCategoryModal":
             setupRemoveCategoryModalView(controller, sender)
+        case "showPlaceDetailView":
+            setupShowPlaceDetailView(controller, sender)
         default:
             break
         }
@@ -111,6 +116,21 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         guard let removeCategoryController = controller as? RemoveCategoryViewController, let gesture = sender as? PressGestureRecognizer else { return }
         removeCategoryController.delegate = self
         removeCategoryController.category = categories.getCategory(gesture.categoryIndex)
+    }
+    
+    func setupShowPlaceDetailView(_ controller: UIViewController, _ sender: Any?) {
+        guard let showPlaceDetailViewController = controller as? PlaceDetailViewController, let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else { return }
+        showPlaceDetailViewController.delegate = self
+        let category = categories.getCategory(indexPath.section)
+        if indexPath.row == category.getPlaceCount() {
+            addingPlace = true
+            category.addPlace()
+            showPlaceDetailViewController.place = category.getPlace(category.getPlaceCount() - 1)
+            showPlaceDetailViewController.navigationItem.title = "Add Place"
+        } else {
+            showPlaceDetailViewController.place = category.getPlace(indexPath.row)
+            showPlaceDetailViewController.navigationItem.title = "Edit Place"
+        }
     }
 
     // MARK: - Table View

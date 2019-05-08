@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		DA744C982282F38600005221 /* GeoLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA744C972282F38600005221 /* GeoLocation.swift */; };
 		DAE39F8D22790067008B26F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F8C22790067008B26F0 /* AppDelegate.swift */; };
 		DAE39F8F22790067008B26F0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F8E22790067008B26F0 /* MasterViewController.swift */; };
 		DAE39F9122790067008B26F0 /* CategoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F9022790067008B26F0 /* CategoryDetailViewController.swift */; };
@@ -51,6 +52,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		DA744C972282F38600005221 /* GeoLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoLocation.swift; sourceTree = "<group>"; };
 		DAE39F8922790067008B26F0 /* Milestone3_FavouritePlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Milestone3_FavouritePlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE39F8C22790067008B26F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAE39F8E22790067008B26F0 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 			children = (
 				DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */,
 				DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */,
+				DA744C972282F38600005221 /* GeoLocation.swift */,
 			);
 			path = API;
 			sourceTree = "<group>";
@@ -379,6 +382,7 @@
 				DAE39F8D22790067008B26F0 /* AppDelegate.swift in Sources */,
 				DAE39FC422790246008B26F0 /* SunriseAndSunset.swift in Sources */,
 				DAE39FD82280FF40008B26F0 /* Errorhandler.swift in Sources */,
+				DA744C982282F38600005221 /* GeoLocation.swift in Sources */,
 				DAE39FD5227D6EFF008B26F0 /* PressGestureRecognizer.swift in Sources */,
 				DAE39FD3227D6E6D008B26F0 /* TapGestureRecognizer.swift in Sources */,
 				DAE39FDC228199A0008B26F0 /* RemoveCategoryViewController.swift in Sources */,

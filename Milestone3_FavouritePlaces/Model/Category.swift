@@ -77,7 +77,7 @@ class Category: Codable, Equatable {
     
     /// Adds a Place object to the collection.
     func addPlace() {
-        
+        places.append(Place())
     }
     
     /// Gets the Place object given it's index.

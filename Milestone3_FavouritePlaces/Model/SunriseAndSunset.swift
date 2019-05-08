@@ -8,6 +8,11 @@
 
 import Foundation
 
+struct SunriseAndSunsetResponse: Codable {
+    var results: SunriseAndSunset
+    var status: String
+}
+
 struct SunriseAndSunset: Codable {
     /// The sunrise time.
     var sunrise: String
@@ -23,4 +28,12 @@ struct SunriseAndSunset: Codable {
     
     /// The twilight time.
     var twilight: String
+    
+    private enum CodingKeys: String, CodingKey {
+        case sunrise
+        case sunset
+        case midday
+        case twilight = "civil_twilight_end"
+        case dayLength = "day_length"
+    }
 }

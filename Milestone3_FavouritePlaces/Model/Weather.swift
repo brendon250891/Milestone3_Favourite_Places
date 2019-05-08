@@ -9,21 +9,23 @@
 import Foundation
 
 struct Weather: Codable {
+    var weather: WeatherDescription
+    var main: WeatherTemperature
+}
+
+struct WeatherDescription: Codable {
+    var description: String
+}
+
+struct WeatherTemperature: Codable {
     /// The minimum temperature.
     var minTemperature: String
     
     /// The maximum temperature.
     var maxTemperature: String
     
-    /// The forecast for the day.
-    var forecast: String
-    
-    func getWeatherImage() -> String {
-        switch forecast {
-        case "rain":
-            return "rainImagePath"
-        default:
-            return "Fine"
-        }
+    private enum CodingKeys: String, CodingKey {
+        case minTemperature = "temp_min"
+        case maxTemperature = "temp_max"
     }
 }
