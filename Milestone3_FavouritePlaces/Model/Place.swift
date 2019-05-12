@@ -108,6 +108,15 @@ class Place: Codable {
         return weather[date]
     }
     
+    func printSunriseAndWeather() {
+        for (date, sunrise) in sunriseSunsetTimes {
+            print("Date: \(date) - \(sunrise)")
+        }
+        for (date, weather) in weather {
+            print("Date: \(date) - \(weather)")
+        }
+    }
+    
     /// Adds the weather data for a particular date.
     /// - Parameters:
     ///     - date: The date to associate the data with.

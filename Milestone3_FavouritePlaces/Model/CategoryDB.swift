@@ -48,6 +48,17 @@ class CategoryDB {
         return nil
     }
     
+    func findEmptyPlace() -> Int? {
+        for category in categories {
+            for i in 0..<category.getPlaceCount() {
+                if category.getPlace(i).getName() == "" {
+                    return i
+                }
+            }
+        }
+        return nil
+    }
+    
     /// Gets the number of Categories currently stored.
     /// - Returns: The nunmber of Categories.
     func getCategoryCount() -> Int {

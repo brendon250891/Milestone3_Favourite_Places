@@ -54,8 +54,16 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
     
     @objc
     func clearSavedData(_ sender: UIBarButtonItem) {
-        categories.clearSavedData()
-        tableView.reloadData()
+        //categories.clearSavedData()
+        //tableView.reloadData()
+        categories.getCategory(0).addPlace()
+        let place = categories.getCategory(0).getPlace(categories.getCategory(0).getPlaceCount() - 1)
+        place.setName("Test")
+        place.setAddress("Test")
+        place.setLatitude(100)
+        place.setLongitude(100)
+        let indexPath = IndexPath(row: categories.getCategory(0).getPlaceCount() - 1, section: 0)
+        tableView.insertRows(at: [indexPath], with: .automatic)
     }
 
     override func viewWillAppear(_ animated: Bool) {
@@ -184,11 +192,28 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         return indexPath.row == categories.getCategory(indexPath.section).getPlaceCount() ? false : true
     }
 
+    override func tableView(_ tableView: UITableView, canMoveRowAt indexPath: IndexPath) -> Bool {
+        return categories.getCategory(indexPath.section).getPlaceCount() == indexPath.row ? false : true
+    }
+    
+    override func tableView(_ tableView: UITableView, moveRowAt sourceIndexPath: IndexPath, to destinationIndexPath: IndexPath) {
+        let sourceCategory = categories.getCategory(sourceIndexPath.section)
+        let destinationCategory = categories.getCategory(destinationIndexPath.section)
+        if destinationIndexPath.row >= destinationCategory.getPlaceCount() {
+            destinationCategory.insertPlace(sourceCategory.getPlace(sourceIndexPath.row), destinationCategory.getPlaceCount())
+        } else {
+            destinationCategory.insertPlace(sourceCategory.getPlace(sourceIndexPath.row), destinationIndexPath.row)
+        }
+        sourceCategory.removePlace(sourceIndexPath.row)
+        tableView.reloadSections(IndexSet([sourceIndexPath.section, destinationIndexPath.section]), with: .automatic)
+    }
+    
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
+        let category = categories.getCategory(indexPath.section)
         if editingStyle == .delete {
+            category.removePlace(indexPath.row)
             tableView.deleteRows(at: [indexPath], with: .fade)
-        } else if editingStyle == .insert {
-            // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view.
+            categories.saveData()
         }
     }
     
@@ -216,16 +241,32 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
     
     func save() {
         addingCategory = false
+        addingPlace = false
         tableView.reloadData()
+        categories.saveData()
+    }
+    
+    func isInSplitView() -> Bool {
+        guard let isCollapsed = splitViewController?.isCollapsed else { return false }
+        return !isCollapsed
     }
     
     func cancel() {
+        if isInSplitView() {
+            navigationController?.popViewController(animated: true)
+        }
         if addingCategory {
             addingCategory = false
             categories.removeCategory(categories.getCategoryCount() - 1)
+            tableView.reloadData()
+        } else if addingPlace {
+            addingPlace = false
+            guard let emptyPlaceCategoryIndex = categories.findEmptyPlace() else { return }
+            let category = categories.getCategory(emptyPlaceCategoryIndex)
+            category.removePlace(category.getPlaceCount() - 1)
+            tableView.reloadSections(IndexSet([emptyPlaceCategoryIndex]), with: .automatic)
         }
-        navigationController?.popViewController(animated: true)
-        tableView.reloadData()
+        categories.saveData()
     }
     
     // MARK: - Remove Category Delegate Functions
@@ -235,6 +276,7 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         dismiss(animated: true) { [weak self] in
             self?.tableView.deleteSections(IndexSet([categoryIndex]), with: .automatic)
         }
+        categories.saveData()
     }
     
     func dismiss() {

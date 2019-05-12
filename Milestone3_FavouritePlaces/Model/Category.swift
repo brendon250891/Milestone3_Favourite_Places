@@ -86,6 +86,14 @@ class Category: Codable, Equatable {
         return places[index]
     }
     
+    func removePlace(_ index: Int) {
+        places.remove(at: index)
+    }
+    
+    func insertPlace(_ place: Place, _ index: Int) {
+        places.insert(place, at: index)
+    }
+    
     static func == (lhs: Category, rhs: Category) -> Bool {
         return lhs.getCategoryName() == rhs.getCategoryName() && lhs.getDateCreated() == rhs.getDateCreated() && lhs.getPlaceCount() == rhs.getPlaceCount()
     }

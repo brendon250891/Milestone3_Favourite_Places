@@ -22,9 +22,10 @@ class SunriseSunsetAPI {
     func request(completion: @escaping (SunriseAndSunset?) -> ()) {
         guard let apiURL = getApiURL() else { return }
         URLSession(configuration: .default).dataTask(with: apiURL) {
-            guard let data = $0, let _ = $1, let _ = $2 else {
-                print("Sunrise and Sunset API Call Error!")
-                return }
+            guard let data = $0 else {
+                print("Sunrise and Sunset API Call Error: \(String(describing: $2))")
+                return
+            }
             do {
                 let sunriseAndSunsetResponse = try JSONDecoder().decode(SunriseAndSunsetResponse.self, from: data)
                 completion(sunriseAndSunsetResponse.results)
@@ -37,5 +38,10 @@ class SunriseSunsetAPI {
     func getApiURL() -> URL? {
         guard let apiURL = URL(string: "https://api.sunrise-sunset.org/json?lat=\(latitude)&lng=\(longitude)&date=\(date)") else { return nil }
         return apiURL
+    }
+    
+    func testRequest(completion: (SunriseAndSunset?) -> ()) {
+        let sunriseAndSunset = SunriseAndSunsetResponse(results: SunriseAndSunset(sunrise: "8:00:00 PM", sunset: "8:00:00 AM", dayLength: "12:00:00", midday: "2:00:00 PM", twilight: "8:30:00 PM"), status: "OK")
+        completion(sunriseAndSunset.results)
     }
 }

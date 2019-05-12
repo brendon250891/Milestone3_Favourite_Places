@@ -23,7 +23,7 @@ struct SunriseAndSunset: Codable {
     /// The length of the day.
     var dayLength: String
     
-    /// The
+    /// The midday time
     var midday: String
     
     /// The twilight time.
@@ -32,7 +32,7 @@ struct SunriseAndSunset: Codable {
     private enum CodingKeys: String, CodingKey {
         case sunrise
         case sunset
-        case midday
+        case midday = "solar_noon"
         case twilight = "civil_twilight_end"
         case dayLength = "day_length"
     }
