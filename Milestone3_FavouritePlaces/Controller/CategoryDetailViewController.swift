@@ -77,7 +77,6 @@ class CategoryDetailViewController: UITableViewController, UITextFieldDelegate {
     @objc
     func cancelButtonPressed() {
         cancel()
-        delegate?.cancel()
     }
     
     func save() {
@@ -87,7 +86,12 @@ class CategoryDetailViewController: UITableViewController, UITextFieldDelegate {
     
     func cancel() {
         guard let categoryCopy = categoryCopy, let category = category else { return }
-        category.setCategoryName(categoryCopy.getCategoryName())
+        if categoryCopy.getCategoryName() == "" {
+            delegate?.delete(category)
+        } else {
+            category.setCategoryName(categoryCopy.getCategoryName())
+            delegate?.save()
+        }
         self.category = nil
         self.categoryCopy = nil
         displayCategory()

@@ -46,14 +46,4 @@ class GeoLocation {
             completion(placemarks[0])
         }
     }
-    
-    struct Placemark {
-        var location: CLLocation?
-        var locality: String?
-    }
-    
-    func testRequest(completion: (Placemark) -> ()) {
-        let placemark = Placemark(location: CLLocation(latitude: -27.975, longitude: 153.0968), locality: "Brisbane")
-        completion(placemark)
-    }
 }

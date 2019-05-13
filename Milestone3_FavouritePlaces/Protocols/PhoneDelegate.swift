@@ -14,5 +14,9 @@ protocol PhoneDelegate: class {
     func save()
     
     /// Handles cancelling of either adding or updating of Categories or Places.
-    func cancel()
+    //func cancel()
+    
+    func delete<T>(_ object: T)
+    
+    func dismiss()
 }

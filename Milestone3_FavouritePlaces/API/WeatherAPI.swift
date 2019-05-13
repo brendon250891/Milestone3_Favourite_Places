@@ -14,6 +14,9 @@ class WeatherAPI {
     
     init(_ cityName: String) {
         self.cityName = cityName
+        if self.cityName.contains(" ") {
+            self.cityName = cityName.replacingOccurrences(of: " ", with: "+")
+        }
     }
     
     func request(completion: @escaping (Weather) -> ()) {

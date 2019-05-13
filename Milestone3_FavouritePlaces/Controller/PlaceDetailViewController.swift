@@ -15,6 +15,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     var placeCopy: Place?
     weak var delegate: PhoneDelegate?
     let headerTitles = ["Name And Address", "Location","Date", "Sunrise And Sunset" ,"Weather", "Map"]
+    let timeZone = 10
 
     @IBOutlet weak var placeNameTextField: UITextField!
     @IBOutlet weak var placeAddressTextField: UITextField!
@@ -38,13 +39,14 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         setupTextFields()
         displayPlace()
         setupCancelButton()
-        checkApiData()
         placeMapView.addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(addPinAnnotation)))
     }
     
-    func checkApiData() {
-        guard let place = place else { return }
-        place.printSunriseAndWeather()
+    override func viewDidDisappear(_ animated: Bool) {
+        if !isInSplitView() {
+            save()
+            delegate?.save()
+        }
     }
     
     func setupTextFields() {
@@ -71,6 +73,21 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     @IBAction func placeNameTextFieldFinishedEditing(_ sender: Any) {
         if hasPlaceInformation() && isInSplitView() {
             save()
+        }
+    }
+    
+    @IBAction func datePickerDateChanged(_ sender: Any) {
+        guard let place = place else { return }
+        let date = getFormattedDate()
+        if place.getWeather(date) == nil {
+            getWeatherInformation(getCityFromAddressString(place.getAddress()))
+        } else {
+            displayWeather(place)
+        }
+        if place.getSunriseAndSunsetTimes(date) == nil {
+            getSunriseAndSunsetTimes(place.getLatitude(), place.getLongitude())
+        } else {
+            displaySunriseAndSunset(place)
         }
     }
     
@@ -110,6 +127,12 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
+    func getCityFromAddressString(_ address: String) -> String {
+        let addressSplit = address.split(separator: ",")
+        let city = String(addressSplit[1])
+        return city
+    }
+    
     func weatherIsEmpty() -> Bool {
         return weatherTypeLabel.text == "" && weatherDateLabel.text == "" && lowTempLabel.text == "" && highTempLabel.text == ""
     }
@@ -124,6 +147,18 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         if !hasSunriseAndSunsetTimes() && !isLocationEmpty() {
             getSunriseAndSunsetTimes(getPlaceLatitude(), getPlaceLongitude())
         }
+    }
+    
+    // MARK : - Textfield getters
+    
+    func getPlaceName() -> String {
+        guard let name = placeNameTextField.text else { return "" }
+        return name
+    }
+    
+    func getPlaceAddress() -> String {
+        guard let address = placeAddressTextField.text else { return "" }
+        return address
     }
     
     func getPlaceLatitude() -> Double {
@@ -150,7 +185,6 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         if textField == placeLatitudeTextField || textField == placeLongitudeTextField {
-            print("changed latitude or longitude")
             return true
         }
         return true
@@ -186,12 +220,12 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     func reverseGeoLookup() {
         guard let latText = placeLatitudeTextField.text, let lonText = placeLongitudeTextField.text, let latitude = Double(latText), let longitude = Double(lonText) else { return }
         GeoLocation(latitude, longitude).request() { [weak self] in
-            guard let name = $0.locality, let this = self else { return }
-            this.placeAddressTextField.text = name
+            guard let address = $0.name, let city = $0.locality, let state = $0.administrativeArea ,let this = self else { return }
+            this.placeAddressTextField.text = "\(address), \(city), \(state)"
             if this.hasPlaceInformation() {
                 this.save()
             }
-            this.getWeatherInformation(name)
+            this.getWeatherInformation(city)
         }
         getSunriseAndSunsetTimes(latitude, longitude)
         addPlaceAnnotation(latitude, longitude)
@@ -202,11 +236,10 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
             guard let sunriseAndSunsetTimes = $0 else { return }
             DispatchQueue.main.async { [weak self] in
                 guard let this = self, let place = this.place else { return }
-                let usersTimeZone = 10
-                this.sunriseTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.sunrise, usersTimeZone)
-                this.middayTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.midday, usersTimeZone)
-                this.sunsetTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.sunset, usersTimeZone)
-                this.twilightTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.twilight, usersTimeZone)
+                this.sunriseTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.sunrise, this.timeZone)
+                this.middayTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.midday, this.timeZone)
+                this.sunsetTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.sunset, this.timeZone)
+                this.twilightTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.twilight, this.timeZone)
                 this.dayLengthLabel.text = "Day Length: \(sunriseAndSunsetTimes.dayLength)"
                 place.addSunriseAndSunsetTimes(this.getFormattedDate(), sunriseAndSunset: sunriseAndSunsetTimes)
                 this.delegate?.save()
@@ -287,10 +320,10 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     func displaySunriseAndSunset(_ place: Place) {
         let date = getFormattedDate()
         guard let sunriseAndSunset = place.getSunriseAndSunsetTimes(date) else { return }
-        sunriseTimeLabel.text = sunriseAndSunset.sunrise
-        middayTimeLabel.text = sunriseAndSunset.midday
-        sunsetTimeLabel.text = sunriseAndSunset.sunset
-        twilightTimeLabel.text = sunriseAndSunset.twilight
+        sunriseTimeLabel.text = utcToGmt(sunriseAndSunset.sunrise, timeZone)
+        middayTimeLabel.text = utcToGmt(sunriseAndSunset.midday, timeZone)
+        sunsetTimeLabel.text = utcToGmt(sunriseAndSunset.sunset, timeZone)
+        twilightTimeLabel.text = utcToGmt(sunriseAndSunset.twilight, timeZone)
         dayLengthLabel.text = "Day Length: \(sunriseAndSunset.dayLength)"
     }
     
@@ -299,6 +332,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         guard let weather = place.getWeather(date) else { return }
         lowTempLabel.text = "\(kelvinToCelsius(weather.main.minTemperature)) ºC"
         highTempLabel.text = "\(kelvinToCelsius(weather.main.maxTemperature)) ºC"
+        weatherDateLabel.text = todayAndTomorrowDateCheck(date)
         weatherTypeLabel.text = weather.weather[0].description
         weatherTypeImage.image = UIImage(imageLiteralResourceName: weather.weather[0].getImageString())
     }
@@ -337,7 +371,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     }
     
     func kelvinToCelsius(_ temperature: Double) -> Double {
-        return ((temperature - 273.15) * 1000) / 1000
+        return Double(round((temperature - 273.15) * 100)/100)
     }
     
     func makeCopy(_ place: Place) {
@@ -348,7 +382,6 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     @objc
     func cancelButtonPressed(_ sender: UIBarButtonItem) {
         cancel()
-        delegate?.cancel()
     }
     
     func cancel() {
@@ -359,6 +392,8 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
             place.setLatitude(placeCopy.getLatitude())
             place.setLongitude(placeCopy.getLongitude())
             displayPlace()
+        } else {
+            delegate?.delete(place)
         }
     }
 }

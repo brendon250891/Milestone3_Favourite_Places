@@ -10,7 +10,7 @@ import UIKit
 
 class RemoveCategoryViewController: UIViewController {
     var category: Category?
-    weak var delegate: RemoveCategoryDelegate?
+    weak var delegate: PhoneDelegate?
 
     @IBOutlet weak var messageLabel: UILabel!
     
@@ -22,7 +22,7 @@ class RemoveCategoryViewController: UIViewController {
     
     @IBAction func removeCategoryButtonPressed(_ sender: Any) {
         guard let category = category else { return }
-        delegate?.remove(category)
+        delegate?.delete(category)
     }
     
     @IBAction func cancelButtonPressed(_ sender: Any) {

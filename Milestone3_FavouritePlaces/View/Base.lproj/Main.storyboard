@@ -477,6 +477,9 @@
                                                     <date key="date" timeIntervalSinceReferenceDate="578927031.82825696">
                                                         <!--2019-05-07 13:03:51 +0000-->
                                                     </date>
+                                                    <connections>
+                                                        <action selector="datePickerDateChanged:" destination="uEq-F2-mde" eventType="valueChanged" id="Rg3-v9-Y8g"/>
+                                                    </connections>
                                                 </datePicker>
                                             </subviews>
                                         </tableViewCellContentView>

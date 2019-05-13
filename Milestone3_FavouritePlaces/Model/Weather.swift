@@ -11,6 +11,10 @@ import Foundation
 struct Weather: Codable {
     var weather: [WeatherDescription]
     var main: WeatherTemperature
+    
+    func toString() -> String {
+        return "Weather: \(weather[0].description)\nMinimum Temp: \(main.minTemperature), Maximum Temp: \(main.maxTemperature)"
+    }
 }
 
 struct WeatherDescription: Codable {

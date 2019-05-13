@@ -49,10 +49,10 @@ class CategoryDB {
     }
     
     func findEmptyPlace() -> Int? {
-        for category in categories {
-            for i in 0..<category.getPlaceCount() {
-                if category.getPlace(i).getName() == "" {
-                    return i
+        for categoryIndex in 0..<getCategoryCount() {
+            for placeIndex in 0..<getCategory(categoryIndex).getPlaceCount() {
+                if getCategory(categoryIndex).getPlace(placeIndex).getName() == "" {
+                    return categoryIndex
                 }
             }
         }

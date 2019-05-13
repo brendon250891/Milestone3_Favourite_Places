@@ -114,7 +114,6 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
             categoryIndex = categories.getCategoryCount() - 1
             viewTitle = "Add Category"
         }
-        
         guard let index = categoryIndex, let title = viewTitle else { return }
         categoryDetailViewController.category = categories.getCategory(index)
         categoryDetailViewController.navigationItem.title = title
@@ -131,7 +130,6 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         showPlaceDetailViewController.delegate = self
         let category = categories.getCategory(indexPath.section)
         if indexPath.row == category.getPlaceCount() {
-            addingPlace = true
             category.addPlace()
             showPlaceDetailViewController.place = category.getPlace(category.getPlaceCount() - 1)
             showPlaceDetailViewController.navigationItem.title = "Add Place"
@@ -205,7 +203,8 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
             destinationCategory.insertPlace(sourceCategory.getPlace(sourceIndexPath.row), destinationIndexPath.row)
         }
         sourceCategory.removePlace(sourceIndexPath.row)
-        tableView.reloadSections(IndexSet([sourceIndexPath.section, destinationIndexPath.section]), with: .automatic)
+        categories.saveData()
+        tableView.reloadData()
     }
     
     override func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
@@ -251,24 +250,6 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         return !isCollapsed
     }
     
-    func cancel() {
-        if isInSplitView() {
-            navigationController?.popViewController(animated: true)
-        }
-        if addingCategory {
-            addingCategory = false
-            categories.removeCategory(categories.getCategoryCount() - 1)
-            tableView.reloadData()
-        } else if addingPlace {
-            addingPlace = false
-            guard let emptyPlaceCategoryIndex = categories.findEmptyPlace() else { return }
-            let category = categories.getCategory(emptyPlaceCategoryIndex)
-            category.removePlace(category.getPlaceCount() - 1)
-            tableView.reloadSections(IndexSet([emptyPlaceCategoryIndex]), with: .automatic)
-        }
-        categories.saveData()
-    }
-    
     // MARK: - Remove Category Delegate Functions
     
     func remove(_ category: Category) {
@@ -281,6 +262,32 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
     
     func dismiss() {
         dismiss(animated: true, completion: nil)
+    }
+    
+    func delete<T>(_ object: T) {
+        if object as? Place != nil , let index = categories.findEmptyPlace(){
+            let category = categories.getCategory(index)
+            category.removePlace(category.getPlaceCount() - 1)
+            tableView.reloadSections(IndexSet([index]), with: .automatic)
+        } else if let category = object as? Category, let index = categories.removeCategory(category) {
+            if index < tableView.numberOfSections {
+                dismiss(animated: true) { [weak self] in
+                    self?.deleteCategory(index)
+                }
+                deleteCategory(index)
+            }
+        }
+        if !isInSplitView() {
+            navigationController?.popViewController(animated: true)
+        }
+        categories.saveData()
+    }
+    
+    func deleteCategory(_ index: Int) {
+        tableView.deleteSections(IndexSet([index]), with: .automatic)
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {
+            self.tableView.reloadData()
+        }
     }
 }
 
