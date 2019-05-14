@@ -82,7 +82,6 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     override func viewDidDisappear(_ animated: Bool) {
         if !isInSplitView() {
             save()
-            delegate?.save()
         }
     }
     
@@ -156,9 +155,9 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     
     /// Handles saving changes made to the Place object.
     func save() {
-        guard let place = place, let name = placeNameTextField.text, let address = placeAddressTextField.text else { return }
-        place.setName(name)
-        place.setAddress(address)
+        guard let place = place else { return }
+        place.setName(getPlaceName())
+        place.setAddress(getPlaceAddress())
         place.setLatitude(getPlaceLatitude())
         place.setLongitude(getPlaceLongitude())
         delegate?.save()
@@ -175,7 +174,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
                 this.getSunriseAndSunsetTimes(location.coordinate.latitude, location.coordinate.longitude)
                 this.getWeatherInformation(city)
                 this.addPlaceAnnotation(location.coordinate.latitude, location.coordinate.longitude)
-                if this.hasPlaceInformation() {
+                if this.hasPlaceInformation() && this.isInSplitView() {
                     this.save()
                 }
             }
@@ -254,13 +253,6 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        if textField == placeLatitudeTextField || textField == placeLongitudeTextField {
-            return true
-        }
-        return true
-    }
-    
     /// Checks if the location text fields are empty.
     /// - Returns: true if the location fields are empty.
     func isLocationEmpty() -> Bool {
@@ -302,7 +294,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         GeoLocation(latitude, longitude).request() { [weak self] in
             guard let address = $0.name, let city = $0.locality, let state = $0.administrativeArea ,let this = self else { return }
             this.placeAddressTextField.text = "\(address), \(city), \(state)"
-            if this.hasPlaceInformation() {
+            if this.hasPlaceInformation() && this.isInSplitView() {
                 this.save()
             }
             this.getWeatherInformation(city)
@@ -326,7 +318,9 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
                 this.twilightTimeLabel.text = this.utcToGmt(sunriseAndSunsetTimes.twilight, this.timeZone)
                 this.dayLengthLabel.text = "Day Length: \(sunriseAndSunsetTimes.dayLength)"
                 place.addSunriseAndSunsetTimes(this.getFormattedDate(), sunriseAndSunset: sunriseAndSunsetTimes)
-                this.delegate?.save()
+                if this.isInSplitView() {
+                    this.delegate?.save()
+                }
             }
         }
     }
@@ -360,7 +354,9 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
                 this.lowTempLabel.text = "\(this.kelvinToCelsius(weather.main.minTemperature)) ºC"
                 this.highTempLabel.text = "\(this.kelvinToCelsius(weather.main.maxTemperature)) ºC"
                 place.addWeather(this.getFormattedDate(), weather: weather)
-                this.delegate?.save()
+                if this.isInSplitView() {
+                    this.delegate?.save()
+                }
             }
         }
     }
@@ -467,9 +463,8 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
                 annotation.title = place.getName()
                 annotation.subtitle = place.getAddress()
             } else {
-                guard let name = this.placeNameTextField.text, let address = this.placeAddressTextField.text else { return }
-                annotation.title = name
-                annotation.subtitle = address
+                annotation.title = this.getPlaceName()
+                annotation.subtitle = this.getPlaceAddress()
             }
             this.placeMapView.addAnnotation(annotation)
         }
@@ -494,11 +489,14 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     ///     - placeDetails: The details of the place indicated by the pin.
     func updatePlaceDetails(_ place: Place, _ placeDetails: CLPlacemark) {
         guard let location = placeDetails.location, let address = placeDetails.name, let city = placeDetails.locality, let state = placeDetails.administrativeArea else { return }
+        place.setName(getPlaceName())
         place.setLatitude(location.coordinate.latitude)
         place.setLongitude(location.coordinate.longitude)
         place.setAddress("\(address), \(city), \(state)")
         displayPlace()
-        delegate?.save()
+        if isInSplitView() {
+            save()
+        }
     }
     
     /// As the temperatures returned by the openweathermap.org API is in kelvin it is converted to celsius.
@@ -525,14 +523,23 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     func cancel() {
         guard let place = place, let placeCopy = placeCopy else { return }
         if placeCopy.getName() != "" {
-            place.setName(placeCopy.getName())
-            place.setAddress(placeCopy.getAddress())
-            place.setLatitude(placeCopy.getLatitude())
-            place.setLongitude(placeCopy.getLongitude())
+            revertToCopy(placeCopy)
             displayPlace()
-            delegate?.save()
+            save()
         } else {
+            revertToCopy(placeCopy)
             delegate?.delete(place)
         }
+    }
+    
+    /// Reverts any changes made back to the stored copy.
+    /// - Parameters:
+    ///     - copy: The Place copy to revert too.
+    func revertToCopy(_ copy: Place) {
+        guard let place = place else { return }
+        place.setName(copy.getName())
+        place.setAddress(copy.getAddress())
+        place.setLatitude(copy.getLatitude())
+        place.setLongitude(copy.getLongitude())
     }
 }
