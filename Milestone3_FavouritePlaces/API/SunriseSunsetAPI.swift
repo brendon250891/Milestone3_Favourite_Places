@@ -8,17 +8,31 @@
 
 import Foundation
 
+/// Class that handles API calls to sunrise-sunset.org
 class SunriseSunsetAPI {
+    /// The latitude of the location to retrieve information.
     var latitude: Double
+    
+    /// The longitude of the location to retrieve information.
     var longitude: Double
+    
+    /// The date to get information for.
     var date: String
     
+    /// Default Constructor
+    /// - Parameters:
+    ///     - latitude: The latitude of the location.
+    ///     - longitude: The longitude of the location.
+    ///     - date: The date to retrieve for.
     init(_ latitude: Double, _ longitude: Double, _ date: String) {
         self.latitude = latitude
         self.longitude = longitude
         self.date = date
     }
     
+    /// Handles the request of information from the sunrise-sunset API.
+    /// - Parameters:
+    ///     - completion: How the returned data should be handled.
     func request(completion: @escaping (SunriseAndSunset?) -> ()) {
         guard let apiURL = getApiURL() else { return }
         URLSession(configuration: .default).dataTask(with: apiURL) {
@@ -35,13 +49,9 @@ class SunriseSunsetAPI {
         }.resume()
     }
     
+    /// Generates the URL to call for the data.
     func getApiURL() -> URL? {
         guard let apiURL = URL(string: "https://api.sunrise-sunset.org/json?lat=\(latitude)&lng=\(longitude)&date=\(date)") else { return nil }
         return apiURL
-    }
-    
-    func testRequest(completion: (SunriseAndSunset?) -> ()) {
-        let sunriseAndSunset = SunriseAndSunsetResponse(results: SunriseAndSunset(sunrise: "8:00:00 PM", sunset: "8:00:00 AM", dayLength: "12:00:00", midday: "2:00:00 PM", twilight: "8:30:00 PM"), status: "OK")
-        completion(sunriseAndSunset.results)
     }
 }

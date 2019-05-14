@@ -9,14 +9,18 @@
 import Foundation
 
 /// Protocols needed for regular phone use.
-protocol PhoneDelegate: class {
+protocol FavouritePlacesDelegate: class {
     /// Handles saving of data when returning back to master view.
     func save()
     
-    /// Handles cancelling of either adding or updating of Categories or Places.
+    /// Handles cancelling of either adding or updating of Categories or Places when not in split view.
     //func cancel()
     
+    /// Handles the deletion of Categories and Places
+    /// - Parameters:
+    ///     - object: The object to delete.
     func delete<T>(_ object: T)
     
+    /// Handles the dismissing of modal views.
     func dismiss()
 }

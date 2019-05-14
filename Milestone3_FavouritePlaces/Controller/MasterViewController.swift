@@ -8,7 +8,7 @@
 
 import UIKit
 
-class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategoryDelegate {
+class MasterViewController: UITableViewController, FavouritePlacesDelegate {
     /// The default detail view to be displayed next to the master view when in split view.
     var categoryDetailViewController: CategoryDetailViewController? = nil
     
@@ -35,16 +35,19 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         clearDataSetup()
     }
     
+    /// Handles setup of the add button.
     func addButtonSetup() {
         let addButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonPressed))
         navigationItem.rightBarButtonItem = addButton
     }
     
+    /// Handles setup of the clear data button.
     func clearDataSetup() {
         let clearDataButton = UIBarButtonItem(barButtonSystemItem: .trash, target: self, action: #selector(clearSavedData))
         navigationItem.rightBarButtonItems?.append(clearDataButton)
     }
     
+    /// Adds a Category and segues to the Category Detail View.
     @objc
     func addButtonPressed(_ sender: UIBarButtonItem) {
         addingCategory = true
@@ -52,6 +55,7 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         performSegue(withIdentifier: "showCategoryDetailView", sender: sender)
     }
     
+    /// Clears all saved data.
     @objc
     func clearSavedData(_ sender: UIBarButtonItem) {
         //categories.clearSavedData()
@@ -73,6 +77,7 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
 
     // MARK: - Segues
 
+    /// Prepares views before seguing.
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let controller = setupControllersWithNavigationControllers(segue, sender) else { return }
         switch segue.identifier {
@@ -87,6 +92,11 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         }
     }
     
+    /// Sets up view controllers that have a navigation controller attached.
+    /// - Parameters:
+    ///     - segue: The segue that is being run.
+    ///     - sender: The object that initiated the segue.
+    /// - Returns:
     func setupControllersWithNavigationControllers(_ segue: UIStoryboardSegue, _ sender: Any?) -> UIViewController? {
         guard let controller = (segue.destination as? UINavigationController)?.topViewController else {
             if let controller = segue.destination as? RemoveCategoryViewController {
@@ -99,6 +109,10 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         return controller
     }
     
+    /// Sets up the Category Detail View with all necesary data.
+    /// - Parameters:
+    ///     - controller: The view controller to setup.
+    ///     - sender: The object that initiated the setup.
     func setupShowCategoryDetailView(_ controller: UIViewController, _ sender: Any?) {
         guard let categoryDetailViewController = controller as? CategoryDetailViewController else {
             print("Error: Controller cannot be cast as CategoryDetailViewController.")
@@ -119,12 +133,20 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         categoryDetailViewController.navigationItem.title = title
     }
     
+    /// Sets up the Remove Category Modal View with necessary data.
+    /// - Parameters:
+    ///     - controller: The controller to setup.
+    ///     - sender: The object that initiated the setup.
     func setupRemoveCategoryModalView(_ controller: UIViewController, _ sender: Any?) {
         guard let removeCategoryController = controller as? RemoveCategoryViewController, let gesture = sender as? PressGestureRecognizer else { return }
         removeCategoryController.delegate = self
         removeCategoryController.category = categories.getCategory(gesture.categoryIndex)
     }
     
+    /// Sets up the Place Detail View with necessary data.
+    /// - Parameters:
+    ///     - controller: The view controller to setup.
+    ///     - sender: The object that initiated setup.
     func setupShowPlaceDetailView(_ controller: UIViewController, _ sender: Any?) {
         guard let showPlaceDetailViewController = controller as? PlaceDetailViewController, let cell = sender as? UITableViewCell, let indexPath = tableView.indexPath(for: cell) else { return }
         showPlaceDetailViewController.delegate = self
@@ -141,6 +163,7 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
 
     // MARK: - Table View
 
+    /// Sets the number of sections to display in the tableview.
     override func numberOfSections(in tableView: UITableView) -> Int {
         return categories.getCategoryCount()
     }
@@ -219,51 +242,56 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
     // MARK: - Gesture Recognizers
     
     /// Toggle Category collapse
+    /// - Parameters:
+    ///     - sender: The tap gesture that initiated the collapse.
     @objc
     func categorySingleTap(_ sender: TapGestureRecognizer) {
         categories.getCategory(sender.categoryIndex).collapseCategory()
         tableView.reloadSections(IndexSet([sender.categoryIndex]), with: .automatic)
     }
     
-    /// Change the name of the Category
+    /// Segues to the Category Detail View to allow the user to edit the Category name.
+    /// - Parameters:
+    ///     - sender: The tap gesture that initiated the segue.
     @objc
     func categoryDoubleTap(_ sender: TapGestureRecognizer) {
         performSegue(withIdentifier: "showCategoryDetailView", sender: sender)
     }
     
+    /// Present the Remove Category Modal View allowing the user to remove a Category.
+    /// - Parameters:
+    ///     - sender: The press gesture that initiated the removal process.
     @objc
     func categoryPressed(_ sender: PressGestureRecognizer) {
         performSegue(withIdentifier: "showRemoveCategoryModal", sender: sender)
     }
 
-    // MARK: - Phone Delegates
+    // MARK: - Favourite Places Delegates
     
+    /// Saves any changes made.
     func save() {
-        addingCategory = false
-        addingPlace = false
+        if !isInSplitView() {
+            navigationController?.popViewController(animated: true)
+        }
         tableView.reloadData()
         categories.saveData()
     }
     
+    /// Checks if the display is in split view.
+    /// - Returns: true if the display is in split view.
     func isInSplitView() -> Bool {
         guard let isCollapsed = splitViewController?.isCollapsed else { return false }
         return !isCollapsed
     }
     
-    // MARK: - Remove Category Delegate Functions
-    
-    func remove(_ category: Category) {
-        guard let categoryIndex = categories.removeCategory(category) else { return }
-        dismiss(animated: true) { [weak self] in
-            self?.tableView.deleteSections(IndexSet([categoryIndex]), with: .automatic)
-        }
-        categories.saveData()
-    }
-    
+    /// Used to dismiss modal views.
     func dismiss() {
         dismiss(animated: true, completion: nil)
     }
     
+    /// Handles the deletion of T objects.
+    /// - Parameters:
+    ///     - object: The object that is to be deleted.
     func delete<T>(_ object: T) {
         if object as? Place != nil , let index = categories.findEmptyPlace(){
             let category = categories.getCategory(index)
@@ -283,6 +311,9 @@ class MasterViewController: UITableViewController, PhoneDelegate, RemoveCategory
         categories.saveData()
     }
     
+    /// Deletes the Category, animates, and reloads the table after 1 second.
+    /// - Parameters:
+    ///     - index: The index of the Category.
     func deleteCategory(_ index: Int) {
         tableView.deleteSections(IndexSet([index]), with: .automatic)
         DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) {

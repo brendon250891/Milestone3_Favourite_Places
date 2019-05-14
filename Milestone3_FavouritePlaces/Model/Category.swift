@@ -18,6 +18,7 @@ class Category: Codable, Equatable {
     /// The Places associated with the Category.
     private var places: [Place]
     
+    /// Flag to indicate whether the Category should be collapsed or not.
     private var isCollapsed: Bool = false
     
     /// Default constructor.
@@ -86,14 +87,26 @@ class Category: Codable, Equatable {
         return places[index]
     }
     
+    /// Removes the Place object at a given index.
+    /// - Parameters:
+    ///     - index: The index of the Place object.
     func removePlace(_ index: Int) {
         places.remove(at: index)
     }
     
+    /// Inserts a Place object at a given index.
+    /// - Parameters:
+    ///     - place: The Place object to insert.
+    ///     - index: Where to insert the Place object.
     func insertPlace(_ place: Place, _ index: Int) {
         places.insert(place, at: index)
     }
     
+    /// Checks equality of two Category objects.
+    /// - Parameters:
+    ///     - lhs: The Category object that is being checked.
+    ///     - rhs: The Category object being compared against.
+    /// - Returns: true if the two objects are equal.
     static func == (lhs: Category, rhs: Category) -> Bool {
         return lhs.getCategoryName() == rhs.getCategoryName() && lhs.getDateCreated() == rhs.getDateCreated() && lhs.getPlaceCount() == rhs.getPlaceCount()
     }

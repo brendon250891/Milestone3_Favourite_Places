@@ -26,6 +26,9 @@ class CategoryDB {
         }
     }
     
+    /// Adds a Category to the stored Categories.
+    /// - Parameters:
+    ///     - categoryName: Optional category name for the Category.
     func addCategory(_ categoryName: String? = nil) {
         guard let categoryName = categoryName else {
             categories.append(Category())
@@ -34,10 +37,17 @@ class CategoryDB {
         categories.append(Category(categoryName))
     }
     
+    /// Removes a Category object from the stored Categories.
+    /// - Parameters:
+    ///     - index: The index of the Category to remove.
     func removeCategory(_ index: Int) {
         categories.remove(at: index)
     }
     
+    /// Removes a Category object from the stored Categories.
+    /// - Parameters:
+    ///     - category: The Category object to remove.
+    /// - Returns: The index of the removed Category.
     func removeCategory(_ category: Category) -> Int? {
         for i in 0..<getCategoryCount() {
             if categories[i] == category {
@@ -48,6 +58,8 @@ class CategoryDB {
         return nil
     }
     
+    /// Searches for empty an empty Place in the Categories.
+    /// - Returns: The index of the Category if one contains an empty Place.
     func findEmptyPlace() -> Int? {
         for categoryIndex in 0..<getCategoryCount() {
             for placeIndex in 0..<getCategory(categoryIndex).getPlaceCount() {
@@ -110,6 +122,7 @@ class CategoryDB {
         }
     }
     
+    /// Resets the saved data.
     func clearSavedData() {
         categories = [Category]()
         addCategory("Default")

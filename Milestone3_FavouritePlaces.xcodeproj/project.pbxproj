@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		DA744C982282F38600005221 /* GeoLocation.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA744C972282F38600005221 /* GeoLocation.swift */; };
-		DA8E153922897BBC0030CB84 /* PlaceDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DA8E153822897BBC0030CB84 /* PlaceDelegate.swift */; };
 		DAE39F8D22790067008B26F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F8C22790067008B26F0 /* AppDelegate.swift */; };
 		DAE39F8F22790067008B26F0 /* MasterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F8E22790067008B26F0 /* MasterViewController.swift */; };
 		DAE39F9122790067008B26F0 /* CategoryDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39F9022790067008B26F0 /* CategoryDetailViewController.swift */; };
@@ -24,12 +23,11 @@
 		DAE39FC822790A4B008B26F0 /* CategoryDB.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FC722790A4B008B26F0 /* CategoryDB.swift */; };
 		DAE39FCB22790F98008B26F0 /* SunriseSunsetAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */; };
 		DAE39FCD22790FA4008B26F0 /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */; };
-		DAE39FD0227D6CF3008B26F0 /* PhoneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCF227D6CF3008B26F0 /* PhoneDelegate.swift */; };
+		DAE39FD0227D6CF3008B26F0 /* FavouritePlacesDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FCF227D6CF3008B26F0 /* FavouritePlacesDelegate.swift */; };
 		DAE39FD3227D6E6D008B26F0 /* TapGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD2227D6E6D008B26F0 /* TapGestureRecognizer.swift */; };
 		DAE39FD5227D6EFF008B26F0 /* PressGestureRecognizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD4227D6EFF008B26F0 /* PressGestureRecognizer.swift */; };
 		DAE39FD82280FF40008B26F0 /* Errorhandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FD72280FF40008B26F0 /* Errorhandler.swift */; };
 		DAE39FDC228199A0008B26F0 /* RemoveCategoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FDB228199A0008B26F0 /* RemoveCategoryViewController.swift */; };
-		DAE39FDE22819CBD008B26F0 /* RemoveCategoryDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FDD22819CBD008B26F0 /* RemoveCategoryDelegate.swift */; };
 		DAE39FE02281A9CB008B26F0 /* PlaceDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DAE39FDF2281A9CB008B26F0 /* PlaceDetailViewController.swift */; };
 		DAE39FE32281AF5F008B26F0 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE39FE22281AF5F008B26F0 /* CoreLocation.framework */; };
 		DAE39FE52281AF65008B26F0 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DAE39FE42281AF65008B26F0 /* MapKit.framework */; };
@@ -54,7 +52,6 @@
 
 /* Begin PBXFileReference section */
 		DA744C972282F38600005221 /* GeoLocation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoLocation.swift; sourceTree = "<group>"; };
-		DA8E153822897BBC0030CB84 /* PlaceDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDelegate.swift; sourceTree = "<group>"; };
 		DAE39F8922790067008B26F0 /* Milestone3_FavouritePlaces.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Milestone3_FavouritePlaces.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DAE39F8C22790067008B26F0 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		DAE39F8E22790067008B26F0 /* MasterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MasterViewController.swift; sourceTree = "<group>"; };
@@ -76,12 +73,11 @@
 		DAE39FC722790A4B008B26F0 /* CategoryDB.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryDB.swift; sourceTree = "<group>"; };
 		DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SunriseSunsetAPI.swift; sourceTree = "<group>"; };
 		DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
-		DAE39FCF227D6CF3008B26F0 /* PhoneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneDelegate.swift; sourceTree = "<group>"; };
+		DAE39FCF227D6CF3008B26F0 /* FavouritePlacesDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouritePlacesDelegate.swift; sourceTree = "<group>"; };
 		DAE39FD2227D6E6D008B26F0 /* TapGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TapGestureRecognizer.swift; sourceTree = "<group>"; };
 		DAE39FD4227D6EFF008B26F0 /* PressGestureRecognizer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PressGestureRecognizer.swift; sourceTree = "<group>"; };
 		DAE39FD72280FF40008B26F0 /* Errorhandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Errorhandler.swift; sourceTree = "<group>"; };
 		DAE39FDB228199A0008B26F0 /* RemoveCategoryViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCategoryViewController.swift; sourceTree = "<group>"; };
-		DAE39FDD22819CBD008B26F0 /* RemoveCategoryDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RemoveCategoryDelegate.swift; sourceTree = "<group>"; };
 		DAE39FDF2281A9CB008B26F0 /* PlaceDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlaceDetailViewController.swift; sourceTree = "<group>"; };
 		DAE39FE22281AF5F008B26F0 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		DAE39FE42281AF65008B26F0 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
@@ -195,8 +191,6 @@
 			children = (
 				DAE39FBF227900CB008B26F0 /* Category.swift */,
 				DAE39FC12279011C008B26F0 /* Place.swift */,
-				DAE39FC322790246008B26F0 /* SunriseAndSunset.swift */,
-				DAE39FC5227902D0008B26F0 /* Weather.swift */,
 				DAE39FC722790A4B008B26F0 /* CategoryDB.swift */,
 			);
 			path = Model;
@@ -206,7 +200,9 @@
 			isa = PBXGroup;
 			children = (
 				DAE39FCA22790F98008B26F0 /* SunriseSunsetAPI.swift */,
+				DAE39FC322790246008B26F0 /* SunriseAndSunset.swift */,
 				DAE39FCC22790FA4008B26F0 /* WeatherAPI.swift */,
+				DAE39FC5227902D0008B26F0 /* Weather.swift */,
 				DA744C972282F38600005221 /* GeoLocation.swift */,
 			);
 			path = API;
@@ -215,9 +211,7 @@
 		DAE39FCE227D6CE0008B26F0 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
-				DAE39FCF227D6CF3008B26F0 /* PhoneDelegate.swift */,
-				DAE39FDD22819CBD008B26F0 /* RemoveCategoryDelegate.swift */,
-				DA8E153822897BBC0030CB84 /* PlaceDelegate.swift */,
+				DAE39FCF227D6CF3008B26F0 /* FavouritePlacesDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -379,8 +373,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				DAE39FD0227D6CF3008B26F0 /* PhoneDelegate.swift in Sources */,
-				DA8E153922897BBC0030CB84 /* PlaceDelegate.swift in Sources */,
+				DAE39FD0227D6CF3008B26F0 /* FavouritePlacesDelegate.swift in Sources */,
 				DAE39F9122790067008B26F0 /* CategoryDetailViewController.swift in Sources */,
 				DAE39F8F22790067008B26F0 /* MasterViewController.swift in Sources */,
 				DAE39F8D22790067008B26F0 /* AppDelegate.swift in Sources */,
@@ -396,7 +389,6 @@
 				DAE39FC6227902D0008B26F0 /* Weather.swift in Sources */,
 				DAE39FCD22790FA4008B26F0 /* WeatherAPI.swift in Sources */,
 				DAE39FC822790A4B008B26F0 /* CategoryDB.swift in Sources */,
-				DAE39FDE22819CBD008B26F0 /* RemoveCategoryDelegate.swift in Sources */,
 				DAE39FCB22790F98008B26F0 /* SunriseSunsetAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

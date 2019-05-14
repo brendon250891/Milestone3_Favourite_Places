@@ -9,23 +9,39 @@
 import Foundation
 import CoreLocation
 
+/// Class that handles location and reverse geolocation calls to the CLGeocoder API.
 class GeoLocation {
+    /// The latitude of the location.
     var latitude: Double?
+    
+    /// The longitude of the location.
     var longitude: Double?
+    
+    /// The name of the place.
     var placeName: String?
     
+    /// Reverse Geolocation Constructor.
+    /// - Parameters:
+    ///     - placeName: The place name to get coordinates for.
     init(_ placeName: String) {
         self.placeName = placeName
         self.latitude = nil
         self.longitude = nil
     }
     
+    /// Address location Constructor.
+    /// - Parameters:
+    ///     - latitude: The latitude of the location.
+    ///     - longitude: The longitude of the location.
     init(_ latitude: Double, _ longitude: Double) {
         self.latitude = latitude
         self.longitude = longitude
         self.placeName = nil
     }
     
+    /// Handles the request of information from the CLGeocoder API.
+    /// - Parameters:
+    ///     - completion: How the returned data should be handled.
     func request(completion: @escaping (CLPlacemark) -> ()) {
         guard let placeName = placeName else {
             guard let latitude = latitude, let longitude = longitude else { return }

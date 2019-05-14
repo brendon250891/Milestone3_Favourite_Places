@@ -11,27 +11,64 @@ import MapKit
 import CoreLocation
 
 class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKMapViewDelegate {
+    /// The Place object passed from the master view.
     var place: Place?
+    
+    /// A copy of the Place object.
     var placeCopy: Place?
-    weak var delegate: PhoneDelegate?
-    let headerTitles = ["Name And Address", "Location","Date", "Sunrise And Sunset" ,"Weather", "Map"]
+    
+    ///
+    weak var delegate: FavouritePlacesDelegate?
+    
+    /// The timezone of the users device.
     let timeZone = 10
 
+    /// Place name text field.
     @IBOutlet weak var placeNameTextField: UITextField!
+    
+    /// Place address text field.
     @IBOutlet weak var placeAddressTextField: UITextField!
+    
+    /// Place latitude text field.
     @IBOutlet weak var placeLatitudeTextField: UITextField!
+    
+    /// Place longitude text field.
     @IBOutlet weak var placeLongitudeTextField: UITextField!
+    
+    /// Place's sunrise time label.
     @IBOutlet weak var sunriseTimeLabel: UILabel!
+    
+    /// Place's midday time label.
     @IBOutlet weak var middayTimeLabel: UILabel!
+    
+    /// Place's sunset time label.
     @IBOutlet weak var sunsetTimeLabel: UILabel!
+    
+    /// Place's twilight time label.
     @IBOutlet weak var twilightTimeLabel: UILabel!
+    
+    /// Date picker.
     @IBOutlet weak var datePicker: UIDatePicker!
+    
+    /// Place's weather date label.
     @IBOutlet weak var weatherDateLabel: UILabel!
+    
+    /// Place's low temperature label.
     @IBOutlet weak var lowTempLabel: UILabel!
+    
+    /// Place's high temperature label.
     @IBOutlet weak var highTempLabel: UILabel!
+    
+    /// Place's day length label.
     @IBOutlet weak var dayLengthLabel: UILabel!
+    
+    /// Place's weather type label.
     @IBOutlet weak var weatherTypeLabel: UILabel!
+    
+    /// Image view to display weather type.
     @IBOutlet weak var weatherTypeImage: UIImageView!
+    
+    /// Map view to display the Place.
     @IBOutlet weak var placeMapView: MKMapView!
     
     override func viewDidLoad() {
@@ -49,6 +86,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
+    /// Sets up the text fields.
     func setupTextFields() {
         let textFields = getAllTextFields()
         for textField in textFields {
@@ -56,26 +94,37 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
+    /// Gets all text fields that can be edited.
+    /// - Returns: Array of editable text fields.
     func getAllTextFields() -> [UITextField] {
         return [placeNameTextField, placeAddressTextField, placeLatitudeTextField, placeLongitudeTextField]
     }
     
+    /// Asks the text field delegate if the text field is returnable.
+    /// - Parameters:
+    ///     - textField: The text field querying the delegate.
+    /// - Returns: true if the text field is returnable.
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         textField.resignFirstResponder()
         return true
     }
     
+    /// Sets up the cancel button.
     func setupCancelButton() {
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancelButtonPressed))
         navigationItem.rightBarButtonItem = cancelButton
     }
 
+    /// Handles when the placeNameTextField has finished being edited.
     @IBAction func placeNameTextFieldFinishedEditing(_ sender: Any) {
         if hasPlaceInformation() && isInSplitView() {
             save()
         }
     }
     
+    /// Handles when the date picker date is changed.
+    /// - Parameters:
+    ///     - sender: The date picker object.
     @IBAction func datePickerDateChanged(_ sender: Any) {
         guard let place = place else { return }
         let date = getFormattedDate()
@@ -91,16 +140,21 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
+    /// Checks to see if all the information need for a Place object has been input.
+    /// - Returns: true if all infomration has been input.
     func hasPlaceInformation() -> Bool {
         guard let name = placeNameTextField.text, let address = placeAddressTextField.text, let latitude = placeLatitudeTextField.text, let longitude = placeLongitudeTextField.text else { return false }
         return name != "" && address != "" && latitude != "" && longitude != ""
     }
     
+    /// Checks if the display is in split view.
+    /// - Returns: true if the display is in split view.
     func isInSplitView() -> Bool {
         guard let isCollapsed = splitViewController?.isCollapsed else { return false }
         return !isCollapsed
     }
     
+    /// Handles saving changes made to the Place object.
     func save() {
         guard let place = place, let name = placeNameTextField.text, let address = placeAddressTextField.text else { return }
         place.setName(name)
@@ -110,6 +164,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         delegate?.save()
     }
     
+    /// Handles when the address text field has finished being edited.
     @IBAction func addressTextFieldFinishedEditing(_ sender: Any) {
         guard let address = placeAddressTextField.text else { return }
         if placeLatitudeTextField.text == "" && placeLongitudeTextField.text == "" {
@@ -127,22 +182,28 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
+    /// Extracts the Place's city from its address.
+    /// - Parameters:
+    ///     - address: The Place's address.
+    /// - Returns: The Place's city.
     func getCityFromAddressString(_ address: String) -> String {
         let addressSplit = address.split(separator: ",")
-        let city = String(addressSplit[1])
-        return city
+        return String(addressSplit[1])
     }
     
+    /// Checks if the weather labels contain data.
+    /// - Returns: true if the labels contain data.
     func weatherIsEmpty() -> Bool {
         return weatherTypeLabel.text == "" && weatherDateLabel.text == "" && lowTempLabel.text == "" && highTempLabel.text == ""
     }
     
+    /// Handles when the place latitude text field has finished being edited.
     @IBAction func placeLatitudeTextFieldFinishedEditing(_ sender: Any) {
         if canReverseGeoLookup() {
             reverseGeoLookup()
         }
     }
-    
+    /// Handles when the place latitude text field value has changed.
     @IBAction func placeLatitudeTextFieldChanged(_ sender: Any) {
         if !hasSunriseAndSunsetTimes() && !isLocationEmpty() {
             getSunriseAndSunsetTimes(getPlaceLatitude(), getPlaceLongitude())
@@ -151,32 +212,42 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     
     // MARK : - Textfield getters
     
+    /// Gets the text that is in the place name text field.
+    /// - Returns: The name of the Place.
     func getPlaceName() -> String {
         guard let name = placeNameTextField.text else { return "" }
         return name
     }
     
+    /// Gets the text that is in the address text field.
+    /// - Returns: The address of the Place.
     func getPlaceAddress() -> String {
         guard let address = placeAddressTextField.text else { return "" }
         return address
     }
     
+    /// Gets the text that is in the latitude text field.
+    /// - Returns: The latitude of the Place.
     func getPlaceLatitude() -> Double {
         guard let latText = placeLatitudeTextField.text, let latitude = Double(latText) else { return 0 }
         return latitude
     }
     
+    /// Gets the text that is in the longitude text field.
+    /// - Returns: The longitude of the Place.
     func getPlaceLongitude() -> Double {
         guard let lonText = placeLongitudeTextField.text, let longitude = Double(lonText) else { return 0 }
         return longitude
     }
     
+    /// Handles when the place longitude text field has finished being edited.
     @IBAction func placeLongitudeTextFieldFinishedEditing(_ sender: Any) {
         if canReverseGeoLookup() {
             reverseGeoLookup()
         }
     }
     
+    /// Handles when the place longitude text field value has changed.
     @IBAction func placeLongitudeTextFieldChanged(_ sender: Any) {
         if !hasSunriseAndSunsetTimes() && !isLocationEmpty() {
             getSunriseAndSunsetTimes(getPlaceLongitude(), getPlaceLongitude())
@@ -190,16 +261,22 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         return true
     }
     
+    /// Checks if the location text fields are empty.
+    /// - Returns: true if the location fields are empty.
     func isLocationEmpty() -> Bool {
         return placeLongitudeTextField.text == "" && placeLatitudeTextField.text == ""
     }
     
+    /// Checks if the Place object has sunrise and sunset times for the current date displayed by the date picker.
+    /// - Returns: true if the Place has sunrise and sunset data for the date.
     func hasSunriseAndSunsetTimes() -> Bool {
         let date = getFormattedDate()
         guard let place = place, place.getSunriseAndSunsetTimes(date) != nil else { return false }
         return true
     }
     
+    /// Checks if the Place object has weather information for the current date displayed by the date picker.
+    /// - Returns: true if the Place has weather information for the date.
     func hasWeatherInformation() -> Bool {
         let date = getFormattedDate()
         guard let place = place, place.getWeather(date) != nil else { return false }
@@ -212,11 +289,14 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         return UserInput(contentType: contentType.rawValue, field: field, value: value)
     }
     
+    /// Checks whether reverse geolocation lookup can be executed.
+    /// - Returns: true if reverse geolocation lookup can be executed.
     func canReverseGeoLookup() -> Bool {
         guard let address = placeAddressTextField.text, let latitude = placeLatitudeTextField.text, let longitude = placeLongitudeTextField.text else { return false }
         return address.isEmpty && !latitude.isEmpty && !longitude.isEmpty
     }
     
+    /// Does reverse geolocation lookup if it can or should be done.
     func reverseGeoLookup() {
         guard let latText = placeLatitudeTextField.text, let lonText = placeLongitudeTextField.text, let latitude = Double(latText), let longitude = Double(lonText) else { return }
         GeoLocation(latitude, longitude).request() { [weak self] in
@@ -231,6 +311,10 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         addPlaceAnnotation(latitude, longitude)
     }
     
+    /// Handles the request of sunrise and sunset times.
+    /// - Parameters:
+    ///     - latitude: The latitdue of the Place.
+    ///     - longitude: The longitude of the Place.
     func getSunriseAndSunsetTimes(_ latitude: Double, _ longitude: Double) {
         SunriseSunsetAPI(latitude, longitude, getFormattedDate()).request() {
             guard let sunriseAndSunsetTimes = $0 else { return }
@@ -247,6 +331,11 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
+    /// As the time returned by sunrise-sunset API is in UTC, it is converted to GMT + 10
+    /// - Parameters:
+    ///     - time: The time to be converted
+    ///     - timeZone: The timezone convert to.
+    /// - Returns: The converted time.
     func utcToGmt(_ time: String, _ timeZone: Int) -> String {
         let hoursAndMinutes = time.split(separator: ":")
         let secondsAndTimePeriod = hoursAndMinutes[2].split(separator: " ")
@@ -257,6 +346,9 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         return "\(hours):\(minutes < 10 ? "0\(minutes)" : "\(minutes)"):\(seconds < 10 ? "0\(seconds)" : "\(seconds)") \(hoursInTwentyFourHourTime < 12 || hoursInTwentyFourHourTime > 24 ? "AM" : "PM")"
     }
     
+    /// Handles the request of weather information
+    /// - Parameters:
+    ///     - cityName: The city to get the weather informatino for.
     func getWeatherInformation(_ cityName: String) {
         WeatherAPI(cityName).request() { [weak self] in
             let weather = $0
@@ -273,6 +365,10 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
     
+    /// Checks if the date is yesterday, today, or tomorrow and displays that if so.
+    /// - Parameters:
+    ///     - date: The date to check.
+    /// - Returns: Yesterday, Today, or Tomorrow if the weather information is for those days based on current date, otherwise returns date in YYYY-MM-dd format.
     func todayAndTomorrowDateCheck(_ date: String) -> String {
         let currentDate = Date()
         let splitDate = date.split(separator: "-")
@@ -290,26 +386,38 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     
     // MARK: - Display functions
     
+    /// Displays the information of the Place object.
     func displayPlace() {
         guard let place = place else { return }
         placeNameTextField.text = place.getName()
         placeAddressTextField.text = place.getAddress()
         placeLatitudeTextField.text = place.getLatitude() == 0.0 ? "" : "\(place.getLatitude())"
         placeLongitudeTextField.text = place.getLongitude() == 0.0 ? "" : "\(place.getLongitude())"
-        if hasApiInformation(place) {
-            displaySunriseAndSunset(place)
-            displayWeather(place)
-            addPlaceAnnotation(place.getLatitude(), place.getLongitude())
-        }
         makeCopy(place)
+        if place.getName() != "" {
+            addPlaceAnnotation(place.getLatitude(), place.getLongitude())
+            if hasApiInformation(place) {
+                displaySunriseAndSunset(place)
+                displayWeather(place)
+            } else {
+                getWeatherInformation(getCityFromAddressString(place.getAddress()))
+                getSunriseAndSunsetTimes(place.getLatitude(), place.getLongitude())
+            }
+        }
     }
     
+    /// Checks if the Place object has API data for the current date.
+    /// - Parameters:
+    ///     - place: The place object to check.
+    /// - Returns: true if the Place has the API information stored.
     func hasApiInformation(_ place: Place) -> Bool {
         let date = getFormattedDate()
         guard let _ = place.getSunriseAndSunsetTimes(date), let _ = place.getWeather(date) else { return false }
         return true
     }
     
+    /// Gets a formatted date based on the value of the date picker.
+    /// - Returns: Date string formatted to YYYY-MM-dd
     func getFormattedDate() -> String {
         let dateFormatter = DateFormatter()
         dateFormatter.timeZone = TimeZone(secondsFromGMT: 3600 * 10)
@@ -317,6 +425,9 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         return dateFormatter.string(from: datePicker.date)
     }
     
+    /// Displays the sunrise and sunset information if it is stored.
+    /// - Parameters:
+    ///     - place: The Place object to get the sunrise and sunset information.
     func displaySunriseAndSunset(_ place: Place) {
         let date = getFormattedDate()
         guard let sunriseAndSunset = place.getSunriseAndSunsetTimes(date) else { return }
@@ -327,6 +438,9 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         dayLengthLabel.text = "Day Length: \(sunriseAndSunset.dayLength)"
     }
     
+    /// Displays the weather infomration if it is stored.
+    /// - Parameters:
+    ///     - place: The Place object to get the weather information.
     func displayWeather(_ place: Place) {
         let date = getFormattedDate()
         guard let weather = place.getWeather(date) else { return }
@@ -337,11 +451,16 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         weatherTypeImage.image = UIImage(imageLiteralResourceName: weather.weather[0].getImageString())
     }
     
+    /// Adds an annotation to the map view based on the latitude and longitude of the Place.
+    /// - Parameters:
+    ///     - latitude: The latitude of the Place.
+    ///     - longitude: The longitude of the Place.
     func addPlaceAnnotation(_ latitude: Double, _ longitude: Double) {
         let coordinate = CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
         placeMapView.setRegion(MKCoordinateRegion(center: coordinate, latitudinalMeters: 500, longitudinalMeters: 500), animated: true)
-        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(3)) { [weak self] in
+        DispatchQueue.main.asyncAfter(deadline: .now() + .seconds(1)) { [weak self] in
             guard let this = self else { return }
+            this.placeMapView.removeAnnotations(this.placeMapView.annotations)
             let annotation = MKPointAnnotation()
             annotation.coordinate = coordinate
             if let place = this.place {
@@ -356,34 +475,53 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         }
     }
 
+    /// Adds another pin to the map view if the user selects a different location.
     @objc
     func addPinAnnotation(_ sender: UITapGestureRecognizer) {
         let tapLocation = sender.location(in: placeMapView)
         let coordinates = placeMapView.convert(tapLocation, toCoordinateFrom: placeMapView)
         GeoLocation(coordinates.latitude, coordinates.longitude).request() { [weak self] in
-            guard let this = self else { return }
-            let annotation = MKPointAnnotation()
-            annotation.coordinate = coordinates
-            annotation.title = $0.locality
-            annotation.subtitle = $0.name
-            this.placeMapView.addAnnotation(annotation)
+            guard let this = self, let place = this.place else { return }
+            if place.getLatitude() != coordinates.latitude && place.getLongitude() != coordinates.longitude {
+                this.updatePlaceDetails(place, $0)
+            }
         }
     }
     
-    func kelvinToCelsius(_ temperature: Double) -> Double {
-        return Double(round((temperature - 273.15) * 100)/100)
+    /// If the user adds a pin to the map view, the Place is updated to the information of that newly added pin.
+    /// - Parameters:
+    ///     - place: The Place object to update.
+    ///     - placeDetails: The details of the place indicated by the pin.
+    func updatePlaceDetails(_ place: Place, _ placeDetails: CLPlacemark) {
+        guard let location = placeDetails.location, let address = placeDetails.name, let city = placeDetails.locality, let state = placeDetails.administrativeArea else { return }
+        place.setLatitude(location.coordinate.latitude)
+        place.setLongitude(location.coordinate.longitude)
+        place.setAddress("\(address), \(city), \(state)")
+        displayPlace()
+        delegate?.save()
     }
     
+    /// As the temperatures returned by the openweathermap.org API is in kelvin it is converted to celsius.
+    /// - Parameters:
+    ///     - temperature: The temperature in kelvin.
+    /// - Returns: The temperature in celsius.
+    func kelvinToCelsius(_ temperature: Double) -> Int {
+        return Int(temperature - 273.15)
+    }
+    
+    /// Makes a copy of the Place object being used.
     func makeCopy(_ place: Place) {
         guard placeCopy == nil else { return }
         placeCopy = Place(place.getName(), place.getAddress(), place.getLatitude(), place.getLongitude())
     }
     
+    /// Handles the pressing of the cancel button.
     @objc
     func cancelButtonPressed(_ sender: UIBarButtonItem) {
         cancel()
     }
     
+    /// If the copy has default information it is deleted, otherwise reverted back to the values held in the copy.
     func cancel() {
         guard let place = place, let placeCopy = placeCopy else { return }
         if placeCopy.getName() != "" {
@@ -392,6 +530,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
             place.setLatitude(placeCopy.getLatitude())
             place.setLongitude(placeCopy.getLongitude())
             displayPlace()
+            delegate?.save()
         } else {
             delegate?.delete(place)
         }
