@@ -156,11 +156,25 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     /// Handles saving changes made to the Place object.
     func save() {
         guard let place = place else { return }
+        if isInSplitView() {
+            updatePlaceCopy(place)
+        }
         place.setName(getPlaceName())
         place.setAddress(getPlaceAddress())
         place.setLatitude(getPlaceLatitude())
         place.setLongitude(getPlaceLongitude())
         delegate?.save()
+    }
+    
+    /// Updates the Place object to the last saved version.
+    /// - Parameters:
+    ///     - place: The object to copy.
+    func updatePlaceCopy(_ place: Place) {
+        guard let placeCopy = placeCopy else { return }
+        placeCopy.setName(place.getName())
+        placeCopy.setAddress(place.getAddress())
+        placeCopy.setLatitude(place.getLatitude())
+        placeCopy.setLongitude(place.getLongitude())
     }
     
     /// Handles when the address text field has finished being edited.
@@ -372,9 +386,9 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
         let calendar = Calendar.current
         if year == calendar.component(.year, from: currentDate) && month == calendar.component(.month, from: currentDate) && day == calendar.component(.day, from: currentDate) {
             return "Today"
-        } else if year == calendar.component(.year, from: currentDate) + 1 && month == calendar.component(.month, from: currentDate) + 1 && day == calendar.component(.day, from: currentDate) + 1 {
+        } else if year == calendar.component(.year, from: currentDate) && month == calendar.component(.month, from: currentDate) && day == calendar.component(.day, from: currentDate) + 1 {
             return "Tomorrow"
-        } else if year == calendar.component(.year, from: currentDate) - 1 && month == calendar.component(.month, from: currentDate) - 1 && day == calendar.component(.day, from: currentDate) {
+        } else if year == calendar.component(.year, from: currentDate) && month == calendar.component(.month, from: currentDate) && day == calendar.component(.day, from: currentDate) - 1 {
             return "Yesterday"
         }
         return date
@@ -489,6 +503,7 @@ class PlaceDetailViewController: UITableViewController, UITextFieldDelegate, MKM
     ///     - placeDetails: The details of the place indicated by the pin.
     func updatePlaceDetails(_ place: Place, _ placeDetails: CLPlacemark) {
         guard let location = placeDetails.location, let address = placeDetails.name, let city = placeDetails.locality, let state = placeDetails.administrativeArea else { return }
+        updatePlaceCopy(place)
         place.setName(getPlaceName())
         place.setLatitude(location.coordinate.latitude)
         place.setLongitude(location.coordinate.longitude)

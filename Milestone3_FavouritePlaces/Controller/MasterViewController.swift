@@ -273,8 +273,8 @@ class MasterViewController: UITableViewController, FavouritePlacesDelegate {
         if !isInSplitView() {
             navigationController?.popViewController(animated: true)
         }
-        tableView.reloadData()
         categories.saveData()
+        tableView.reloadData()
     }
     
     /// Checks if the display is in split view.
@@ -302,6 +302,7 @@ class MasterViewController: UITableViewController, FavouritePlacesDelegate {
                 dismiss(animated: true) { [weak self] in
                     self?.deleteCategory(index)
                 }
+            } else {
                 deleteCategory(index)
             }
         }

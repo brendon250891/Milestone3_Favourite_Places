@@ -48,6 +48,7 @@ class CategoryDetailViewController: UITableViewController, UITextFieldDelegate {
             save()
             delegate?.save()
             clearTextFields()
+            category = nil
         }
     }
     
